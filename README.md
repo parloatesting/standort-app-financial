@@ -1,1 +1,1 @@
-# standort-app-financial
+# standort-app-insurance
