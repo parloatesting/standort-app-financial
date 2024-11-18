@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", function() {
             locationSuccess: "Standort erfolgreich gesendet!",
             locationError: "Fehler bei der Standortermittlung:",
             sendError: "Fehler beim Senden des Standorts.",
-            locationUploaded: "Der Standort wurde erfolgreich übermittelt!",
         },
         en: {
             title: "Location Tracker",
@@ -25,7 +24,6 @@ document.addEventListener("DOMContentLoaded", function() {
             locationSuccess: "Location successfully sent!",
             locationError: "Error getting location:",
             sendError: "Error sending location.",
-            locationUploaded: "The location has been successfully uploaded!",
         }
     };
 
@@ -39,11 +37,9 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("sendLocationBtn").textContent = t.buttonText;
     document.getElementById("status").textContent = t.statusDefault;
 
-    // Den statusElement-Referenz direkt hier definieren, sodass sie im gesamten Scope verwendet werden kann
-    const statusElement = document.getElementById("status");
-
     // Event-Listener für den Button
     document.getElementById("sendLocationBtn").addEventListener("click", function() {
+        const statusElement = document.getElementById("status");
         statusElement.textContent = t.locating;
 
         if (navigator.geolocation) {
@@ -59,7 +55,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
             statusElement.textContent = `(${latitude}, ${longitude})`;
 
-            sendLocationToAirtable(latitude, longitude);
+            // `statusElement` wird hier als Argument übergeben
+            sendLocationToAirtable(latitude, longitude, statusElement);
         }
 
         function error(err) {
@@ -68,18 +65,18 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    function sendLocationToAirtable(lat, long) {
-        const airtableApiKey = 'patXZqLQwKUjS5xp8.e4f12ae1d7dd37139c814d97ab2e90701f36ba218dbff298306d157162693a48';    // Airtable API-Schlüssel
-        const airtableBaseId = 'appBlmfn043m7s7PN';           // Airtable Base-ID
-        const airtableTableName = 'currentLocation';        // Airtable Tabellenname
-        const recordId = 'rec0Lmx79HxvPBa2H';               // ID des Datensatzes
+    function sendLocationToAirtable(lat, long, statusElement) {
+        const airtableApiKey = 'patXZqLQwKUjS5xp8.e4f12ae1d7dd37139c814d97ab2e90701f36ba218dbff298306d157162693a48'; // Airtable API-Schlüssel
+        const airtableBaseId = 'appBlmfn043m7s7PN'; // Airtable Base-ID
+        const airtableTableName = 'currentLocation'; // Airtable Tabellenname
+        const recordId = 'rec0Lmx79HxvPBa2H'; // ID des Datensatzes
 
         const url = `https://api.airtable.com/v0/${airtableBaseId}/${airtableTableName}/${recordId}`;
         const data = {
             fields: {
                 "Latitude": lat,
                 "Longitude": long,
-                "Error": ""  // Lösche Fehler, wenn die Koordinaten erfolgreich sind
+                "Error": "" // Lösche Fehler, wenn die Koordinaten erfolgreich sind
             }
         };
 
@@ -100,7 +97,8 @@ document.addEventListener("DOMContentLoaded", function() {
             return response.json();
         })
         .then(data => {
-            statusElement.textContent = t.locationUploaded;  // Erfolgreiche Nachricht anzeigen
+            // `statusElement` wird hier aktualisiert
+            statusElement.textContent = t.locationSuccess;
         })
         .catch(error => {
             statusElement.textContent = t.sendError;
@@ -109,17 +107,17 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function sendErrorToAirtable(errorMessage) {
-        const airtableApiKey = 'patXZqLQwKUjS5xp8.e4f12ae1d7dd37139c814d97ab2e90701f36ba218dbff298306d157162693a48';    // Airtable API-Schlüssel
-        const airtableBaseId = 'appBlmfn043m7s7PN';           // Airtable Base-ID
-        const airtableTableName = 'currentLocation';        // Airtable Tabellenname
-        const recordId = 'rec0Lmx79HxvPBa2H';               // ID des Datensatzes
+        const airtableApiKey = 'patXZqLQwKUjS5xp8.e4f12ae1d7dd37139c814d97ab2e90701f36ba218dbff298306d157162693a48'; // Airtable API-Schlüssel
+        const airtableBaseId = 'appBlmfn043m7s7PN'; // Airtable Base-ID
+        const airtableTableName = 'currentLocation'; // Airtable Tabellenname
+        const recordId = 'rec0Lmx79HxvPBa2H'; // ID des Datensatzes
 
         const url = `https://api.airtable.com/v0/${airtableBaseId}/${airtableTableName}/${recordId}`;
         const data = {
             fields: {
                 "Error": errorMessage,
-                "Latitude": "",  // Leeren, da keine Koordinaten ermittelt wurden
-                "Longitude": ""  // Leeren, da keine Koordinaten ermittelt wurden
+                "Latitude": "", // Leeren, da keine Koordinaten ermittelt wurden
+                "Longitude": "" // Leeren, da keine Koordinaten ermittelt wurden
             }
         };
 
