@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     function sendLocationToAirtable(lat, long) {
-        const airtableApiKey = 'patXZqLQwKUjS5xp8.2aabea0bc1272ce8bc4ed54936cabec8a67e997f3496d251b1daa43b2e6994b6';    // Airtable API-Schlüssel
+        const airtableApiKey = 'patXZqLQwKUjS5xp8.e4f12ae1d7dd37139c814d97ab2e90701f36ba218dbff298306d157162693a48';    // Airtable API-Schlüssel
         const airtableBaseId = 'appBlmfn043m7s7PN';           // Airtable Base-ID
         const airtableTableName = 'currentLocation';        // Airtable Tabellenname
         const recordId = 'rec0Lmx79HxvPBa2H';               // ID des Datensatzes
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function sendErrorToAirtable(errorMessage) {
-        const airtableApiKey = 'patXZqLQwKUjS5xp8.2aabea0bc1272ce8bc4ed54936cabec8a67e997f3496d251b1daa43b2e6994b6';    // Airtable API-Schlüssel
+        const airtableApiKey = 'patXZqLQwKUjS5xp8.e4f12ae1d7dd37139c814d97ab2e90701f36ba218dbff298306d157162693a48';    // Airtable API-Schlüssel
         const airtableBaseId = 'appBlmfn043m7s7PN';           // Airtable Base-ID
         const airtableTableName = 'currentLocation';        // Airtable Tabellenname
         const recordId = 'rec0Lmx79HxvPBa2H';               // ID des Datensatzes
